@@ -1,5 +1,6 @@
 ---
 title: Escape
+zh_title: 逃避
 subtitle: Website Design
 layout: default
 modal-id: 2

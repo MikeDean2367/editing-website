@@ -1,4 +1,18 @@
 <!-- Team Section -->
+<style>
+    .team-member {
+        margin-bottom: 30px;
+    }
+
+    .img-circle {
+        border-radius: 50%;
+    }
+
+    .justify-content-center {
+        justify-content: center;
+    }
+</style>
+
     <section id="team" class="bg-light-gray">
         <div class="container">
             <div class="row">
@@ -7,7 +21,39 @@
                     <h3 class="section-subheading text-muted">Lorem ipsum dolor sit amet consectetur.</h3>
                 </div>
             </div>
+
+            <div class="row" style="display: flex; justify-content: center;">
+                {% for member in site.leader %}
+                <div class="col-sm-4">
+                    <div class="team-member">
+                        <img src="img/team/{{ member.pic }}.jpg" class="img-responsive img-circle" alt="">
+                        <!-- <h4>{{ member.name }}</h4> -->
+                        <h4 data-lang="en">{{ member.name }}</h4>
+                        <h4 data-lang="zh" style="display: none;">{{ member.zh_name }}</h4>
+                        <p class="text-muted">{{ member.position }}</p>
+                        <ul class="list-inline social-buttons">
+                            {% for network in member.social %}
+                            <li>
+                                <a href="{{ network.url }}">
+                                    <i class="fa fa-{{ network.title }}"></i>
+                                </a>
+                            </li>
+                            {% endfor %}
+
+                        </ul>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
             <div class="row">
+                <div class="col-lg-12 text-center">
+                    <h2></h2>
+                    <h2></h2>
+                    <h2 class="section-heading">Second</h2>
+                    <!-- <h3 class="section-subheading text-muted">Lorem ipsum dolor sit amet consectetur.</h3> -->
+                </div>
+            </div>
+            <div class="row" style="display: flex; justify-content: center;">
                 {% for member in site.people %}
                 <div class="col-sm-4">
                     <div class="team-member">
@@ -28,6 +74,50 @@
                 </div>
                 {% endfor %}
             </div>
+            <div class="row">
+                <div class="col-lg-12 text-center">
+                    <h2></h2>
+                    <h2></h2>
+                    <h2 class="section-heading">Sudent</h2>
+                    <!-- <h3 class="section-subheading text-muted">Lorem ipsum dolor sit amet consectetur.</h3> -->
+                </div>
+            </div>
+            <div class="row" style="display: flex;  justify-content: left">
+                {% assign member_count = 0 %}
+                {% assign max_count = 5 %}
+                {% for member in site.students %}
+                    {% assign member_count = member_count | plus: 1 %}
+                    
+                    <div class="col-sm-4">
+                        <div class="team-member">
+                            <img src="img/team/{{ member.pic }}.jpg" class="img-responsive img-circle" alt="">
+                            <h4>{{ member.name }}</h4>
+                            <p class="text-muted">{{ member.position }}</p>
+                            <ul class="list-inline social-buttons">
+                                {% for network in member.social %}
+                                <li>
+                                    <a href="{{ network.url }}">
+                                        <i class="fa fa-{{ network.title }}"></i>
+                                    </a>
+                                </li>
+                                {% endfor %}
+
+                            </ul>
+                        </div>
+                    </div>
+                    {% assign remainder = member_count | modulo: max_count %}
+                    {% if remainder == 0 %}
+                        </div><div class="row" style="display: flex;  justify-content: left;">
+                    {% endif %}
+                {% endfor %}
+                {% assign remaining_columns = max_count | minus: member_count | modulo: max_count %}
+                {% if remaining_columns != max_count %}
+                    {% for i in (1..remaining_columns) %}
+                        <div class="col-sm-4"></div>
+                    {% endfor %}
+                {% endif %}
+            </div>
+
             <div class="row">
                 <div class="col-lg-8 col-lg-offset-2 text-center">
                     <p class="large text-muted">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aut eaque, laboriosam veritatis, quos non quis ad perspiciatis, totam corporis ea, alias ut unde.</p>

@@ -1,11 +1,29 @@
+{% if page.lang %}
+  {% assign lang = page.lang %}
+{% elsif site.lang %}
+  {% assign lang = site.lang %}
+{% else %}
+  {% assign lang = site.default_lang %}
+{% endif %}
+
+{% capture url_lang %}
+  {% if page.url contains 'lang=en' %}
+    en
+  {% elsif page.url contains 'lang=zh' %}
+    zh
+  {% else %}
+    {{ lang }}
+  {% endif %}
+{% endcapture %}
+
 <!DOCTYPE html>
 <html>
-
+  
   {% include head.html %}
 
 
     <body id="page-top" class="index">
-
+      
     {% include header.html %}
     {% include services.html %}
     {% include portfolio_grid.html %}
@@ -18,4 +36,49 @@
     {% include js.html %}
 
     </body>
+    <script>
+      function setLanguage(lang) {
+        var elements = document.querySelectorAll('[data-lang]');
+        elements.forEach(function(element) {
+          if (element.getAttribute('data-lang') === lang) {
+            element.style.display = '';
+          } else {
+            element.style.display = 'none';
+          }
+        });
+    
+        // Update language switcher text
+        if (lang === 'zh') {
+          document.getElementById('lang-switch').style.display = 'none';
+          document.getElementById('lang-switch-zh').style.display = '';
+        } else {
+          document.getElementById('lang-switch').style.display = '';
+          document.getElementById('lang-switch-zh').style.display = 'none';
+        }
+    
+        // Store language preference in localStorage
+        localStorage.setItem('preferredLanguage', lang);
+        console.log('Preferred language set to:', lang);
+      }
+    
+      // Get preferred language from localStorage or default to the site's default language
+      var preferredLanguage = 'en'; //localStorage.getItem('preferredLanguage')
+      console.log('Preferred language loaded:', preferredLanguage);
+    
+      // If no preferred language is set, use the default language
+      if (!preferredLanguage) {
+        preferredLanguage = '{{ site.default_lang }}';
+        console.log('No preferred language set, using default:', preferredLanguage);
+      }
+      
+      // Explicitly set default language elements to be visible if not set by JS
+      if (!localStorage.getItem('preferredLanguage')) {
+        document.querySelectorAll('[data-lang="{{ site.default_lang }}"]').forEach(function(element) {
+          element.style.display = '';
+        });
+      }
+    
+      setLanguage(preferredLanguage);
+    </script>
+    
 </html>

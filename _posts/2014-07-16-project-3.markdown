@@ -1,5 +1,6 @@
 ---
 title: Golden
+zh_title: 黄金
 subtitle: Website Design
 layout: default
 modal-id: 3

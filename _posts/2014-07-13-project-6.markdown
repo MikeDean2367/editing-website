@@ -1,5 +1,6 @@
 ---
 title: Round Icons
+zh_title: 圆形的图案
 subtitle: Graphic Design
 layout: default
 modal-id: 6
