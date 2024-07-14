@@ -191,3 +191,6 @@ address:
 # Build settings
 markdown: kramdown
 permalink: pretty
+
+# data-lang="en"
+# data-lang="zh" style="display: none;"

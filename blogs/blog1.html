@@ -40,6 +40,26 @@
             height: 40px;
             margin-right: 10px;
         }
+        #top-bar .buttons {
+            display: flex;
+            align-items: center;
+            margin-left: auto;
+            margin-right: 30px;
+        }
+        #top-bar .buttons a {
+            margin-left: 20px;
+            text-decoration: none;
+            color: #333;
+            font-size: 1em;
+            padding: 10px 15px;
+            border-radius: 25px;
+            transition: background-color 0.3s, color 0.3s;
+        }
+        #top-bar .buttons a:hover {
+            background-color: #007bff;
+            color: white;
+        }
+        
         #particles-js {
             position: absolute;
             width: 100%;
@@ -121,7 +141,10 @@
         h1 {
             color: #2c3e50;
             font-size: 2.5em;
-            margin-bottom: 0.5em;
+            margin-bottom: -0.5em;
+            line-height: 1.2em; /* 调整行高 */
+            margin-top: 0.5em; /* 上边距 */
+            margin-bottom: 0.5em; /* 下边距 */
         }
         h2 {
             color: #34495e;
@@ -208,6 +231,22 @@
         <div class="title">
             <img src="./assets/zju.svg" alt="ZJU Logo">ZJU NLP
         </div>
+        <div class="buttons">
+            <a href="https://example.com/page2">
+                <span data-lang="zh" style="display: none;">章节1</span>
+                <span data-lang="en">Section 1</span>
+            </a>
+            <a href="https://example.com/page1">
+                <span data-lang="zh" style="display: none;">章节2</span>
+                <span data-lang="en">Section 2</span>
+            </a>
+            <a id="lang-switch" onclick="setLanguage('zh')" style="display: none;">
+                En<sup>⤵</sup><sub>中</sub>
+            </a>
+            <a id="lang-switch-zh" onclick="setLanguage('en')">
+                中<sup>⤵</sup><sub>En</sub>
+            </a>
+        </div>
         <div id="particles-js"></div>
         <!-- <div class="description">This is a description text.</div> -->
     </div>
@@ -218,7 +257,8 @@
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">
                     <path fill="currentColor" d="M21 11H6.414l5.293-5.293-1.414-1.414L3.586 12l6.707 6.707 1.414-1.414L6.414 13H21z"/>
                 </svg>
-                Back
+                <span data-lang="en">Back Homepage</span>
+                <span data-lang="zh" style="display: none;">返回主页</span>
             </a>
             
             <div class="toc-title">Table of Contents</div>
@@ -253,8 +293,10 @@
     </div>
 </body>
 <script>
-    const markdown = `# Hello World
-This is a **Markdown** file.
+    const markdown = `# Exploring Collaboration Mechanisms for LLM Agents: A Social Psychology View
+[Mike Dean](https://github.com/mikedean2367) | [2024-7-13]()
+
+> This is a **Markdown** file.
 ## Section 1
 Content for section 1.
 ### Subsection A
@@ -548,10 +590,61 @@ if __namd__ == '__main__':
     }
 
     // 在页面加载时设置高度
-    document.addEventListener('DOMContentLoaded', setTOCContainerHeight);
+    // document.addEventListener('DOMContentLoaded', setTOCContainerHeight);
+    document.addEventListener("DOMContentLoaded", function() {
+        setTOCContainerHeight();
+        const h1Elements = document.querySelectorAll('h1');
+        h1Elements.forEach(h1 => {
+            h1.innerHTML = '“' + h1.innerHTML + '”';
+        });
+    });
+
 
     // 在窗口大小调整时设置高度
     window.addEventListener('resize', setTOCContainerHeight);
+
+    function setLanguage(lang) {
+        var elements = document.querySelectorAll('[data-lang]');
+        elements.forEach(function(element) {
+          if (element.getAttribute('data-lang') === lang) {
+            element.style.display = '';
+          } else {
+            element.style.display = 'none';
+          }
+        });
+    
+        // Update language switcher text
+        if (lang === 'zh') {
+          document.getElementById('lang-switch').style.display = 'none';
+          document.getElementById('lang-switch-zh').style.display = '';
+        } else {
+          document.getElementById('lang-switch').style.display = '';
+          document.getElementById('lang-switch-zh').style.display = 'none';
+        }
+    
+        // Store language preference in localStorage
+        localStorage.setItem('preferredLanguage', lang);
+        console.log('Preferred language set to:', lang);
+      }
+    
+      // Get preferred language from localStorage or default to the site's default language
+      var preferredLanguage = 'en'; //localStorage.getItem('preferredLanguage')
+      console.log('Preferred language loaded:', preferredLanguage);
+    
+      // If no preferred language is set, use the default language
+      if (!preferredLanguage) {
+        preferredLanguage = '{{ site.default_lang }}';
+        console.log('No preferred language set, using default:', preferredLanguage);
+      }
+      
+      // Explicitly set default language elements to be visible if not set by JS
+      if (!localStorage.getItem('preferredLanguage')) {
+        document.querySelectorAll('[data-lang="{{ site.default_lang }}"]').forEach(function(element) {
+          element.style.display = '';
+        });
+      }
+    
+      setLanguage(preferredLanguage);
 
 </script>
 </html>
